@@ -623,6 +623,33 @@
             .hero h1 { font-size: 32px; }
             .about-content, .contact-grid { grid-template-columns: 1fr; }
         }
+
+        
+        .download-btn {
+    display: inline-block;
+    padding: 12px 28px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    font-family: inherit;
+}
+
+.download-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+.download-btn:active {
+    transform: translateY(0);
+}
     </style>
 </head>
 <body>
@@ -677,7 +704,31 @@
                 <p>I build clean, modern websites, craft robust backend systems, and develop embedded solutions that bridge hardware and software.</p>
                 <div class="btn-group">
                     <a href="#projects" class="btn btn-primary"><i class="fas fa-arrow-down"></i> View My Work</a>
-                    <a href="#" id="downloadCV" class="btn btn-outline"><i class="fas fa-download"></i> Download CV</a>
+                   <a href="#" id="cvDownloadBtn" class="download-btn">Download CV (Soon)</a>
+
+<script>
+document.getElementById('cvDownloadBtn').addEventListener('click', function(e) {
+    e.preventDefault();
+    
+    // Check if CV file exists
+    fetch('cv.pdf')
+        .then(response => {
+            if (response.ok) {
+                // CV exists - download it
+                window.location.href = 'cv.pdf';
+                // Update button text and style
+                this.textContent = 'Download CV';
+                this.style.background = 'linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%)';
+            } else {
+                // CV doesn't exist yet
+                alert('📄 CV itapatikana hivi karibuni!');
+            }
+        })
+        .catch(() => {
+            alert('📄 CV itapatikana hivi karibuni!');
+        });
+});
+</script>
                 </div>
             </div>
             <div class="hero-right">
