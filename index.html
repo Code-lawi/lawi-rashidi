@@ -146,7 +146,6 @@
             100% { transform: scale(1.08); }
         }
 
-        /* OPTIMIZED: Picha 5 tu na ukubwa mdogo (w=800 badala ya 1600) */
         .slide-1 { background-image: url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=75'); }
         .slide-2 { background-image: url('https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&q=75'); }
         .slide-3 { background-image: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=75'); }
@@ -274,6 +273,30 @@
             font-size: 20px;
         }
 
+        /* Language Switch Button */
+        .lang-switch {
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            border-radius: 40px;
+            padding: 0 16px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #60a5fa;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .lang-switch i {
+            font-size: 16px;
+        }
+        .lang-switch:hover {
+            background: rgba(59, 130, 246, 0.4);
+            transform: translateY(-2px);
+        }
+
         .menu-btn {
             display: none;
             background: rgba(59, 130, 246, 0.2);
@@ -324,6 +347,10 @@
             display: flex;
             align-items: center;
             gap: 12px;
+        }
+
+        body.light .mobile-nav a {
+            color: #0f172a;
         }
 
         .mobile-nav a i {
@@ -498,8 +525,33 @@
         .project-info { padding: 24px; }
         .project-tech { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
         .project-tech span { background: rgba(59, 130, 246, 0.2); padding: 4px 12px; border-radius: 20px; font-size: 11px; color: #60a5fa; }
-        .project-link { color: #60a5fa; text-decoration: none; font-weight: 600; display: inline-flex; gap: 6px; transition: gap 0.3s; }
+        .project-link { color: #60a5fa; text-decoration: none; font-weight: 600; display: inline-flex; gap: 6px; transition: gap 0.3s; cursor: pointer; }
         .project-link:hover { gap: 10px; }
+
+        /* Future projects badge */
+        .future-badge {
+            background: #f59e0b;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            margin-left: 8px;
+            color: #000;
+            display: inline-block;
+        }
+
+        body.light .future-badge {
+            background: #f59e0b;
+            color: #000;
+        }
+
+        .future-project {
+            opacity: 0.85;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .future-project .project-img {
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+        }
 
         .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
         .contact-info {
@@ -658,7 +710,7 @@
     </style>
 </head>
 <body>
-    <!-- SLIDESHOW - SASA NI 5 TU -->
+    <!-- SLIDESHOW -->
     <div class="slideshow-bg">
         <div class="slide slide-1 active"></div>
         <div class="slide slide-2"></div>
@@ -670,15 +722,20 @@
 
     <div class="container">
         <nav class="navbar" id="navbar">
-            <div class="logo"><h1>Lawi Rashidi</h1></div>
+            <div class="logo"><h1 id="logoText">Lawi Rashidi</h1></div>
             <div class="nav-links">
-                <a href="#home" class="active">Home</a>
-                <a href="#about">About</a>
-                <a href="#skills">Skills</a>
-                <a href="#projects">Projects</a>
-                <a href="#contact">Contact</a>
+                <a href="#home" class="active" id="navHome">Home</a>
+                <a href="#about" id="navAbout">About</a>
+                <a href="#skills" id="navSkills">Skills</a>
+                <a href="#projects" id="navProjects">Projects</a>
+                <a href="#future-projects" id="navFuture">Future</a>
+                <a href="#contact" id="navContact">Contact</a>
             </div>
             <div class="nav-actions" style="display: flex; gap: 12px;">
+                <div class="lang-switch" id="langSwitch">
+                    <i class="fas fa-globe"></i>
+                    <span id="langLabel">EN</span>
+                </div>
                 <div class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></div>
                 <div class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></div>
             </div>
@@ -688,75 +745,133 @@
         <div class="overlay" id="overlay"></div>
         <div class="mobile-nav" id="mobileNav">
             <button class="close-menu" id="closeMenu"><i class="fas fa-times"></i></button>
-            <a href="#home"><i class="fas fa-home"></i> Home</a>
-            <a href="#about"><i class="fas fa-user"></i> About</a>
-            <a href="#skills"><i class="fas fa-code"></i> Skills</a>
-            <a href="#projects"><i class="fas fa-rocket"></i> Projects</a>
-            <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
+            <a href="#home"><i class="fas fa-home"></i> <span id="mobileHome">Home</span></a>
+            <a href="#about"><i class="fas fa-user"></i> <span id="mobileAbout">About</span></a>
+            <a href="#skills"><i class="fas fa-code"></i> <span id="mobileSkills">Skills</span></a>
+            <a href="#projects"><i class="fas fa-rocket"></i> <span id="mobileProjects">Projects</span></a>
+            <a href="#future-projects"><i class="fas fa-microchip"></i> <span id="mobileFuture">Future</span></a>
+            <a href="#contact"><i class="fas fa-envelope"></i> <span id="mobileContact">Contact</span></a>
         </div>
 
         <section id="home" class="hero">
             <div class="hero-left">
-                <h1>Hi, I'm <span>Lawi Rashidi</span><br>Web Developer, Programmer & Embedded Engineer</h1>
+                <h1 id="heroTitle">Hi, I'm <span>Lawi Rashidi</span><br>Web Developer, Programmer & Embedded Engineer</h1>
                 <div class="typing-container"><span class="typed-text"></span><span class="cursor">|</span></div>
-                <p>I build clean, modern websites, craft robust backend systems, and develop embedded solutions that bridge hardware and software.</p>
+                <p id="heroDesc">I build clean, modern websites, craft robust backend systems, and develop embedded solutions that bridge hardware and software.</p>
                 <div class="btn-group">
-                    <a href="#projects" class="btn btn-primary"><i class="fas fa-arrow-down"></i> View My Work</a>
-                    <a href="#" id="cvDownloadBtn" class="download-btn">Download CV (Soon)</a>
+                    <a href="#projects" class="btn btn-primary" id="viewWorkBtn"><i class="fas fa-arrow-down"></i> View My Work</a>
+                    <a href="#" id="cvDownloadBtn" class="download-btn" id="cvBtnText">Download CV (Soon)</a>
                 </div>
             </div>
             <div class="hero-right">
                 <div class="profile-circle">
-                    <img src="lawi.jpg" alt="Lawi Rashidi" onerror="this.parentElement.innerHTML='<i class=\"fas fa-user-astronaut\" style=\"font-size:70px;\"></i>
+                    <img src="lawi.jpg" alt="Lawi Rashidi" onerror="this.parentElement.innerHTML= '<i class=\"fas fa-user-astronaut\" style=\"font-size:70px;\"></i>
                 </div>
             </div>
         </section>
 
         <section id="about" class="section">
-            <div class="section-title"><i class="fas fa-user-astronaut"></i><span>About Me</span></div>
+            <div class="section-title"><i class="fas fa-user-astronaut"></i><span id="aboutTitle">About Me</span></div>
             <div class="about-content">
                 <div class="about-text">
-                    <p>I'm a passionate Computer Science student and creative developer based in Tanzania. I specialize in building responsive web applications, designing intuitive interfaces, and programming embedded systems for IoT solutions.</p>
-                    <p>With 3+ years of coding experience across web, desktop, and embedded platforms, I love turning complex problems into elegant, functional solutions.</p>
+                    <p id="aboutText1">I'm a passionate Computer Science student and creative developer based in Tanzania. I specialize in building responsive web applications, designing intuitive interfaces, and programming embedded systems for IoT solutions.</p>
+                    <p id="aboutText2">With 3+ years of coding experience across web, desktop, and embedded platforms, I love turning complex problems into elegant, functional solutions.</p>
                 </div>
                 <div class="about-goals">
-                    <h3 style="margin-bottom: 20px;">🎯 My Goals</h3>
+                    <h3 style="margin-bottom: 20px;" id="goalsTitle">🎯 My Goals</h3>
                     <ul class="goals-list">
-                        <li><i class="fas fa-check-circle"></i> Build innovative tech solutions for real-world problems</li>
-                        <li><i class="fas fa-check-circle"></i> Master full-stack development & embedded systems</li>
-                        <li><i class="fas fa-check-circle"></i> Contribute to open-source projects</li>
-                        <li><i class="fas fa-check-circle"></i> Inspire and mentor young developers</li>
+                        <li><i class="fas fa-check-circle"></i> <span id="goal1">Build innovative tech solutions for real-world problems</span></li>
+                        <li><i class="fas fa-check-circle"></i> <span id="goal2">Master full-stack development & embedded systems</span></li>
+                        <li><i class="fas fa-check-circle"></i> <span id="goal3">Contribute to open-source projects</span></li>
+                        <li><i class="fas fa-check-circle"></i> <span id="goal4">Inspire and mentor young developers</span></li>
                     </ul>
                 </div>
             </div>
         </section>
 
         <section id="skills" class="section">
-            <div class="section-title"><i class="fas fa-cogs"></i><span>Skills & Technologies</span></div>
+            <div class="section-title"><i class="fas fa-cogs"></i><span id="skillsTitle">Skills & Technologies</span></div>
             <div class="skills-grid">
-                <div class="skill-card"><div class="skill-icon">💻</div><h3>Frontend</h3><div class="skill-tags"><span class="skill-tag">HTML5</span><span class="skill-tag">CSS3</span><span class="skill-tag">JavaScript</span><span class="skill-tag">React.js</span><span class="skill-tag">Tailwind</span></div></div>
-                <div class="skill-card"><div class="skill-icon">⚙️</div><h3>Backend</h3><div class="skill-tags"><span class="skill-tag">PHP</span><span class="skill-tag">MySQL</span><span class="skill-tag">Node.js</span><span class="skill-tag">Python</span><span class="skill-tag">Django</span></div></div>
-                <div class="skill-card"><div class="skill-icon">🔌</div><h3>Embedded & IoT</h3><div class="skill-tags"><span class="skill-tag">C/C++</span><span class="skill-tag">Arduino</span><span class="skill-tag">ESP32</span><span class="skill-tag">RPi</span><span class="skill-tag">MQTT</span></div></div>
-                <div class="skill-card"><div class="skill-icon">🛠️</div><h3>Tools & Design</h3><div class="skill-tags"><span class="skill-tag">Git/GitHub</span><span class="skill-tag">Figma</span><span class="skill-tag">Docker</span><span class="skill-tag">Linux</span></div></div>
+                <div class="skill-card"><div class="skill-icon">💻</div><h3 id="frontendTitle">Frontend</h3><div class="skill-tags"><span class="skill-tag">HTML5</span><span class="skill-tag">CSS3</span><span class="skill-tag">JavaScript</span><span class="skill-tag">React.js</span><span class="skill-tag">Tailwind</span></div></div>
+                <div class="skill-card"><div class="skill-icon">⚙️</div><h3 id="backendTitle">Backend</h3><div class="skill-tags"><span class="skill-tag">PHP</span><span class="skill-tag">MySQL</span><span class="skill-tag">Node.js</span><span class="skill-tag">Python</span><span class="skill-tag">Django</span></div></div>
+                <div class="skill-card"><div class="skill-icon">🔌</div><h3 id="embeddedTitle">Embedded & IoT</h3><div class="skill-tags"><span class="skill-tag">C/C++</span><span class="skill-tag">Arduino</span><span class="skill-tag">ESP32</span><span class="skill-tag">RPi</span><span class="skill-tag">MQTT</span></div></div>
+                <div class="skill-card"><div class="skill-icon">🛠️</div><h3 id="toolsTitle">Tools & Design</h3><div class="skill-tags"><span class="skill-tag">Git/GitHub</span><span class="skill-tag">Figma</span><span class="skill-tag">Docker</span><span class="skill-tag">Linux</span></div></div>
             </div>
         </section>
 
         <section id="projects" class="section">
-            <div class="section-title"><i class="fas fa-rocket"></i><span>Featured Projects</span></div>
+            <div class="section-title"><i class="fas fa-rocket"></i><span id="projectsTitle">Featured Projects</span></div>
             <div class="projects-grid">
-                <div class="project-card"><div class="project-img">🌾</div><div class="project-info"><h3>Smart Agriculture IoT</h3><p>ESP32-based soil monitoring with real-time data and automated irrigation.</p><div class="project-tech"><span>C++</span><span>ESP32</span><span>MQTT</span></div><a href="#" class="project-link">Live Demo →</a></div></div>
-                <div class="project-card"><div class="project-img">📝</div><div class="project-info"><h3>TaskFlow Manager</h3><p>Full-stack task management app with real-time updates and team collaboration.</p><div class="project-tech"><span>React</span><span>Node.js</span><span>MongoDB</span></div><a href="#" class="project-link">Live Demo →</a></div></div>
-                <div class="project-card"><div class="project-img">🤖</div><div class="project-info"><h3>Edge AI Detection</h3><p>Computer vision on Raspberry Pi to detect wildlife using TensorFlow Lite.</p><div class="project-tech"><span>Python</span><span>TensorFlow Lite</span><span>RPi</span></div><a href="#" class="project-link">Live Demo →</a></div></div>
+                <div class="project-card">
+                    <div class="project-img">✅</div>
+                    <div class="project-info">
+                        <h3 id="proj1Title">TaskFlow Manager</h3>
+                        <p id="proj1Desc">Full-stack task management app with CRUD operations, PHP backend, and MySQL database.</p>
+                        <div class="project-tech"><span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>PHP</span><span>MySQL</span></div>
+                        <a href="#" class="project-link" onclick="alert('🎯 TaskFlow Manager - PHP backend with MySQL!'); return false;" id="viewProject1">View Project →</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-img">🌤️</div>
+                    <div class="project-info">
+                        <h3 id="proj2Title">Weather Dashboard</h3>
+                        <p id="proj2Desc">Real-time weather app using OpenWeatherMap API. Shows temperature, humidity, wind speed, and 5-day forecast.</p>
+                        <div class="project-tech"><span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>REST API</span></div>
+                        <a href="#" class="project-link" onclick="alert('🌤️ Weather Dashboard - Coming soon!'); return false;" id="viewProject2">View Project →</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-img">📚</div>
+                    <div class="project-info">
+                        <h3 id="proj3Title">Online Bookstore System</h3>
+                        <p id="proj3Desc">Complete e-bookstore with shopping cart, user authentication, order management, and admin panel using PHP & MySQL.</p>
+                        <div class="project-tech"><span>PHP</span><span>MySQL</span><span>Bootstrap</span><span>JavaScript</span><span>Session</span></div>
+                        <a href="#" class="project-link" onclick="alert('📚 Online Bookstore System - Full PHP project!'); return false;" id="viewProject3">View Project →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="future-projects" class="section">
+            <div class="section-title"><i class="fas fa-microchip"></i><span id="futureTitle">Future Projects (IoT & Hardware)</span></div>
+            <div class="projects-grid">
+                <div class="project-card future-project">
+                    <div class="project-img">🌾</div>
+                    <div class="project-info">
+                        <h3>Smart Agriculture IoT <span class="future-badge" id="futureBadge1">Future</span></h3>
+                        <p id="futureDesc1">ESP32-based soil monitoring system with real-time data and automated irrigation. Requires ESP32 and soil moisture sensors.</p>
+                        <div class="project-tech"><span>C++</span><span>ESP32</span><span>MQTT</span><span>Sensors</span></div>
+                        <a href="#" class="project-link" onclick="alert('🚀 Future Project: Smart Agriculture IoT!'); return false;" id="futureLink1">Coming Soon →</a>
+                    </div>
+                </div>
+                <div class="project-card future-project">
+                    <div class="project-img">🤖</div>
+                    <div class="project-info">
+                        <h3>Edge AI Detection <span class="future-badge" id="futureBadge2">Future</span></h3>
+                        <p id="futureDesc2">Computer vision on Raspberry Pi for wildlife detection using TensorFlow Lite. Needs Raspberry Pi and camera module.</p>
+                        <div class="project-tech"><span>Python</span><span>TensorFlow Lite</span><span>Raspberry Pi</span><span>Camera</span></div>
+                        <a href="#" class="project-link" onclick="alert('🚀 Future Project: Edge AI Detection!'); return false;" id="futureLink2">Coming Soon →</a>
+                    </div>
+                </div>
+                <div class="project-card future-project">
+                    <div class="project-img">🏠</div>
+                    <div class="project-info">
+                        <h3>Smart Home System <span class="future-badge" id="futureBadge3">Future</span></h3>
+                        <p id="futureDesc3">Home automation with voice control, temperature monitoring, and remote appliance control using ESP8266.</p>
+                        <div class="project-tech"><span>ESP8266</span><span>Blynk</span><span>Relays</span><span>DHT11</span></div>
+                        <a href="#" class="project-link" onclick="alert('🚀 Future Project: Smart Home System!'); return false;" id="futureLink3">Planning →</a>
+                    </div>
+                </div>
             </div>
         </section>
 
         <section id="contact" class="section">
-            <div class="section-title"><i class="fas fa-envelope"></i><span>Get In Touch</span></div>
+            <div class="section-title"><i class="fas fa-envelope"></i><span id="contactTitle">Get In Touch</span></div>
             <div class="contact-grid">
                 <div class="contact-info">
-                    <div class="contact-item"><i class="fas fa-envelope" style="color: #60a5fa;"></i><div><strong>Email</strong><br><a href="mailto:fadhililawi04@gmail.com">fadhililawi04@gmail.com</a></div></div>
-                    <div class="contact-item"><i class="fas fa-phone-alt" style="color: #10b981;"></i><div><strong>Phone</strong><br><a href="tel:+255741248242">+255 741 248 242</a></div></div>
-                    <div class="contact-item"><i class="fab fa-whatsapp" style="color: #25D366;"></i><div><strong>WhatsApp</strong><br><a href="https://wa.me/255741248242" target="_blank">Click to Chat</a></div></div>
+                    <div class="contact-item"><i class="fas fa-envelope" style="color: #60a5fa;"></i><div><strong id="emailLabel">Email</strong><br><a href="mailto:fadhililawi04@gmail.com">fadhililawi04@gmail.com</a></div></div>
+                    <div class="contact-item"><i class="fas fa-phone-alt" style="color: #10b981;"></i><div><strong id="phoneLabel">Phone</strong><br><a href="tel:+255741248242">+255 741 248 242</a></div></div>
+                    <div class="contact-item"><i class="fab fa-whatsapp" style="color: #25D366;"></i><div><strong id="whatsappLabel">WhatsApp</strong><br><a href="https://wa.me/255741248242" target="_blank" id="whatsappLink">Click to Chat</a></div></div>
                     <div class="social-links">
                         <a href="https://github.com/Code-lawi" target="_blank" data-brand="github"><i class="fab fa-github"></i></a>
                         <a href="https://linkedin.com/in/Fadhili-Lawi" target="_blank" data-brand="linkedin"><i class="fab fa-linkedin-in"></i></a>
@@ -769,18 +884,18 @@
                 <div class="contact-form">
                     <form id="contactForm">
                         <div class="form-group">
-                            <label><i class="fas fa-user"></i> Your Name</label>
+                            <label id="nameLabel"><i class="fas fa-user"></i> Your Name</label>
                             <input type="text" id="userName" placeholder="Enter your full name" required>
                         </div>
                         <div class="form-group">
-                            <label><i class="fas fa-envelope"></i> Your Email</label>
+                            <label id="emailFormLabel"><i class="fas fa-envelope"></i> Your Email</label>
                             <input type="email" id="userEmail" placeholder="Enter your email address" required>
                         </div>
                         <div class="form-group">
-                            <label><i class="fas fa-comment"></i> Your Message</label>
+                            <label id="messageLabel"><i class="fas fa-comment"></i> Your Message</label>
                             <textarea id="userMessage" rows="4" placeholder="Write your message here..." required></textarea>
                         </div>
-                        <button type="submit" class="submit-btn" id="sendBtn"><i class="fas fa-paper-plane"></i> Send Message</button>
+                        <button type="submit" class="submit-btn" id="sendBtn"><i class="fas fa-paper-plane"></i> <span id="sendBtnText">Send Message</span></button>
                     </form>
                     <div id="formStatus" style="margin-top: 16px; text-align: center; font-size: 13px;"></div>
                 </div>
@@ -789,9 +904,14 @@
 
         <footer class="footer">
             <div class="footer-content">
-                <div class="footer-logo"><h3>Fadhili Lawi</h3><p>Web Developer | Programmer | Embedded Engineer</p></div>
+                <div class="footer-logo"><h3>Fadhili Lawi</h3><p id="footerTagline">Web Developer | Programmer | Embedded Engineer</p></div>
                 <div class="footer-links">
-                    <a href="#home">Home</a><a href="#about">About</a><a href="#skills">Skills</a><a href="#projects">Projects</a><a href="#contact">Contact</a>
+                    <a href="#home" id="footerHome">Home</a>
+                    <a href="#about" id="footerAbout">About</a>
+                    <a href="#skills" id="footerSkills">Skills</a>
+                    <a href="#projects" id="footerProjects">Projects</a>
+                    <a href="#future-projects" id="footerFuture">Future</a>
+                    <a href="#contact" id="footerContact">Contact</a>
                 </div>
                 <div class="footer-copyright"><p>© 2026 Lawi Rashidi — Web Developer, Programmer & Embedded Engineer. Built with <i class="fas fa-heart" style="color: red;"></i></p></div>
             </div>
@@ -808,6 +928,113 @@
         const EMAILJS_SERVICE_ID = "service_sopd5jj";
         const EMAILJS_TEMPLATE_ID = "template_uesghph";
 
+        // Language translations
+        const translations = {
+            en: {
+                logo: "Lawi Rashidi", navHome: "Home", navAbout: "About", navSkills: "Skills", navProjects: "Projects", navFuture: "Future", navContact: "Contact",
+                heroTitle: "Hi, I'm <span>Lawi Rashidi</span><br>Web Developer, Programmer & Embedded Engineer",
+                heroDesc: "I build clean, modern websites, craft robust backend systems, and develop embedded solutions that bridge hardware and software.",
+                viewWorkBtn: "View My Work", cvBtn: "Download CV (Soon)",
+                aboutTitle: "About Me", aboutText1: "I'm a passionate Computer Science student and creative developer based in Tanzania. I specialize in building responsive web applications, designing intuitive interfaces, and programming embedded systems for IoT solutions.", aboutText2: "With 3+ years of coding experience across web, desktop, and embedded platforms, I love turning complex problems into elegant, functional solutions.",
+                goalsTitle: "🎯 My Goals", goal1: "Build innovative tech solutions for real-world problems", goal2: "Master full-stack development & embedded systems", goal3: "Contribute to open-source projects", goal4: "Inspire and mentor young developers",
+                skillsTitle: "Skills & Technologies", frontendTitle: "Frontend", backendTitle: "Backend", embeddedTitle: "Embedded & IoT", toolsTitle: "Tools & Design",
+                projectsTitle: "Featured Projects", proj1Title: "TaskFlow Manager", proj1Desc: "Full-stack task management app with CRUD operations, PHP backend, and MySQL database.", proj2Title: "Weather Dashboard", proj2Desc: "Real-time weather app using OpenWeatherMap API. Shows temperature, humidity, wind speed, and 5-day forecast.", proj3Title: "Online Bookstore System", proj3Desc: "Complete e-bookstore with shopping cart, user authentication, order management, and admin panel using PHP & MySQL.",
+                viewProject: "View Project →", futureTitle: "Future Projects (IoT & Hardware)", futureDesc1: "ESP32-based soil monitoring system with real-time data and automated irrigation. Requires ESP32 and soil moisture sensors.", futureDesc2: "Computer vision on Raspberry Pi for wildlife detection using TensorFlow Lite. Needs Raspberry Pi and camera module.", futureDesc3: "Home automation with voice control, temperature monitoring, and remote appliance control using ESP8266.",
+                comingSoon: "Coming Soon →", planning: "Planning →", futureBadge: "Future", contactTitle: "Get In Touch", emailLabel: "Email", phoneLabel: "Phone", whatsappLabel: "WhatsApp", whatsappLink: "Click to Chat", nameLabel: "Your Name", emailFormLabel: "Your Email", messageLabel: "Your Message", sendBtnText: "Send Message", footerTagline: "Web Developer | Programmer | Embedded Engineer", footerHome: "Home", footerAbout: "About", footerSkills: "Skills", footerProjects: "Projects", footerFuture: "Future", footerContact: "Contact"
+            },
+            sw: {
+                logo: "Lawi Rashidi", navHome: "Nyumbani", navAbout: "Kuhusu", navSkills: "Ujuzi", navProjects: "Miradi", navFuture: "Baadaye", navContact: "Wasiliana",
+                heroTitle: "Habari, Mimi <span>Lawi Rashidi</span><br>Web Developer, Programmer & Embedded Engineer",
+                heroDesc: "Ninatengeneza tovuti za kisasa, mifumo imara ya nyuma, na suluhisho za embedded zinazounganisha hardware na software.",
+                viewWorkBtn: "Tazama Kazi Zangu", cvBtn: "Pakua CV (Hivi Karibuni)",
+                aboutTitle: "Kuhusu Mimi", aboutText1: "Mimi ni mwanafunzi wa sayansi ya kompyuta na msanidi programu nchini Tanzania. Ninabobea katika kutengeneza programu za wavuti zinazojibu, kubuni violesura rahisi, na kupanga mifumo ya embedded kwa suluhisho za IoT.", aboutText2: "Kwa uzoefu wa miaka 3+ ya upangaji programu, napenda kugeuza matatizo magumu kuwa suluhisho bora na zinazofanya kazi.",
+                goalsTitle: "🎯 Malengo Yangu", goal1: "Kujenga suluhu za kiteknolojia kwa matatizo halisi", goal2: "Kujua vizuri full-stack na mifumo ya embedded", goal3: "Kuchangia miradi huria", goal4: "Kuhamasisha na kufundisha wasanidi wachanga",
+                skillsTitle: "Ujuzi na Teknolojia", frontendTitle: "Mbele", backendTitle: "Nyuma", embeddedTitle: "IoT na Embedded", toolsTitle: "Zana na Usanifu",
+                projectsTitle: "Miradi Iliyojitokeza", proj1Title: "TaskFlow Manager", proj1Desc: "Programu kamili ya usimamizi wa kazi na CRUD, PHP backend na MySQL.", proj2Title: "Weather Dashboard", proj2Desc: "Programu ya hali ya hewa ya wakati halisi kwa kutumia OpenWeatherMap API. Inaonyesha joto, unyevu, kasi ya upepo na utabiri wa siku 5.", proj3Title: "Mfumo wa Duka la Vitabu", proj3Desc: "Duka kamili la vitabu mtandaoni lenye kikapu cha ununuzi, uthibitishaji wa mtumiaji, usimamizi wa maagizo na paneli ya msimamizi kwa kutumia PHP na MySQL.",
+                viewProject: "Tazama Mradi →", futureTitle: "Miradi ya Baadaye (IoT na Hardware)", futureDesc1: "Mfumo wa kilimo cha kisasa unaotumia ESP32 kwa uchunguzi wa unyevu wa udongo na umwagiliaji otomatiki. Inahitaji ESP32 na sensorer za unyevu.", futureDesc2: "Kompyuta ya kuona kwenye Raspberry Pi kwa ajili ya kugundua wanyamapori kwa kutumia TensorFlow Lite. Inahitaji Raspberry Pi na moduli ya kamera.", futureDesc3: "Mfumo wa nyumbani otomatiki kwa udhibiti wa sauti, ufuatiliaji wa joto, na udhibiti wa vifaa kwa mbali kwa kutumia ESP8266.",
+                comingSoon: "Inakuja →", planning: "Kupangwa →", futureBadge: "Baadaye", contactTitle: "Wasiliana Nami", emailLabel: "Barua Pepe", phoneLabel: "Simu", whatsappLabel: "WhatsApp", whatsappLink: "Bonyeza Kuzungumza", nameLabel: "Jina Lako", emailFormLabel: "Barua Pepe Yako", messageLabel: "Ujumbe Wako", sendBtnText: "Tuma Ujumbe", footerTagline: "Msanidi Programu na Embedded", footerHome: "Nyumbani", footerAbout: "Kuhusu", footerSkills: "Ujuzi", footerProjects: "Miradi", footerFuture: "Baadaye", footerContact: "Wasiliana"
+            }
+        };
+
+        let currentLang = localStorage.getItem('lang') || 'en';
+        
+        function applyLanguage(lang) {
+            const t = translations[lang];
+            document.getElementById('logoText').innerText = t.logo;
+            document.getElementById('navHome').innerText = t.navHome;
+            document.getElementById('navAbout').innerText = t.navAbout;
+            document.getElementById('navSkills').innerText = t.navSkills;
+            document.getElementById('navProjects').innerText = t.navProjects;
+            document.getElementById('navFuture').innerText = t.navFuture;
+            document.getElementById('navContact').innerText = t.navContact;
+            document.getElementById('mobileHome').innerText = t.navHome;
+            document.getElementById('mobileAbout').innerText = t.navAbout;
+            document.getElementById('mobileSkills').innerText = t.navSkills;
+            document.getElementById('mobileProjects').innerText = t.navProjects;
+            document.getElementById('mobileFuture').innerText = t.navFuture;
+            document.getElementById('mobileContact').innerText = t.navContact;
+            document.getElementById('heroTitle').innerHTML = t.heroTitle;
+            document.getElementById('heroDesc').innerText = t.heroDesc;
+            document.getElementById('viewWorkBtn').innerHTML = '<i class="fas fa-arrow-down"></i> ' + t.viewWorkBtn;
+            document.getElementById('cvDownloadBtn').innerText = t.cvBtn;
+            document.getElementById('aboutTitle').innerText = t.aboutTitle;
+            document.getElementById('aboutText1').innerText = t.aboutText1;
+            document.getElementById('aboutText2').innerText = t.aboutText2;
+            document.getElementById('goalsTitle').innerHTML = t.goalsTitle;
+            document.getElementById('goal1').innerText = t.goal1;
+            document.getElementById('goal2').innerText = t.goal2;
+            document.getElementById('goal3').innerText = t.goal3;
+            document.getElementById('goal4').innerText = t.goal4;
+            document.getElementById('skillsTitle').innerText = t.skillsTitle;
+            document.getElementById('frontendTitle').innerText = t.frontendTitle;
+            document.getElementById('backendTitle').innerText = t.backendTitle;
+            document.getElementById('embeddedTitle').innerText = t.embeddedTitle;
+            document.getElementById('toolsTitle').innerText = t.toolsTitle;
+            document.getElementById('projectsTitle').innerText = t.projectsTitle;
+            document.getElementById('proj1Title').innerText = t.proj1Title;
+            document.getElementById('proj1Desc').innerText = t.proj1Desc;
+            document.getElementById('proj2Title').innerText = t.proj2Title;
+            document.getElementById('proj2Desc').innerText = t.proj2Desc;
+            document.getElementById('proj3Title').innerText = t.proj3Title;
+            document.getElementById('proj3Desc').innerText = t.proj3Desc;
+            document.getElementById('viewProject1').innerHTML = t.viewProject;
+            document.getElementById('viewProject2').innerHTML = t.viewProject;
+            document.getElementById('viewProject3').innerHTML = t.viewProject;
+            document.getElementById('futureTitle').innerText = t.futureTitle;
+            document.getElementById('futureDesc1').innerText = t.futureDesc1;
+            document.getElementById('futureDesc2').innerText = t.futureDesc2;
+            document.getElementById('futureDesc3').innerText = t.futureDesc3;
+            document.getElementById('futureLink1').innerHTML = t.comingSoon;
+            document.getElementById('futureLink2').innerHTML = t.comingSoon;
+            document.getElementById('futureLink3').innerHTML = t.planning;
+            document.getElementById('contactTitle').innerText = t.contactTitle;
+            document.getElementById('emailLabel').innerText = t.emailLabel;
+            document.getElementById('phoneLabel').innerText = t.phoneLabel;
+            document.getElementById('whatsappLabel').innerText = t.whatsappLabel;
+            document.getElementById('whatsappLink').innerText = t.whatsappLink;
+            document.getElementById('nameLabel').innerHTML = '<i class="fas fa-user"></i> ' + t.nameLabel;
+            document.getElementById('emailFormLabel').innerHTML = '<i class="fas fa-envelope"></i> ' + t.emailFormLabel;
+            document.getElementById('messageLabel').innerHTML = '<i class="fas fa-comment"></i> ' + t.messageLabel;
+            document.getElementById('sendBtnText').innerText = t.sendBtnText;
+            document.getElementById('footerTagline').innerText = t.footerTagline;
+            document.getElementById('footerHome').innerText = t.footerHome;
+            document.getElementById('footerAbout').innerText = t.footerAbout;
+            document.getElementById('footerSkills').innerText = t.footerSkills;
+            document.getElementById('footerProjects').innerText = t.footerProjects;
+            document.getElementById('footerFuture').innerText = t.footerFuture;
+            document.getElementById('footerContact').innerText = t.footerContact;
+            document.getElementById('langLabel').innerText = lang.toUpperCase();
+            localStorage.setItem('lang', lang);
+        }
+
+        document.getElementById('langSwitch').addEventListener('click', () => {
+            currentLang = currentLang === 'en' ? 'sw' : 'en';
+            applyLanguage(currentLang);
+        });
+
+        applyLanguage(currentLang);
+
+        // Rest of the original functionality
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 50) navbar.classList.add('scrolled');
@@ -851,7 +1078,6 @@
 
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
-        // OPTIMIZED: Muda umebadilishwa kutoka 4200 hadi 5000 (sekunde 5)
         setInterval(() => {
             slides[currentSlide].classList.remove('active');
             currentSlide = (currentSlide + 1) % slides.length;
@@ -905,73 +1131,36 @@
         
         contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
             const userName = document.getElementById('userName').value;
             const userEmail = document.getElementById('userEmail').value;
             const userMessage = document.getElementById('userMessage').value;
-            
             if (!userName || !userEmail || !userMessage) {
                 formStatus.innerHTML = '<span style="color: #f97316;">❌ Please fill in all fields</span>';
                 return;
             }
-            
             sendBtn.disabled = true;
             sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
             formStatus.innerHTML = '';
-            
-            const templateParams = {
-                from_name: userName,
-                from_email: userEmail,
-                message: userMessage,
-                to_email: "fadhililawi04@gmail.com"
-            };
-            
+            const templateParams = { from_name: userName, from_email: userEmail, message: userMessage, to_email: "fadhililawi04@gmail.com" };
             try {
-                const response = await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
-                console.log('✅ Email sent successfully:', response);
+                await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
                 formStatus.innerHTML = '<span style="color: #10b981;">✅ Message sent successfully! I\'ll get back to you soon.</span>';
                 contactForm.reset();
             } catch (error) {
-                console.error('❌ Email error:', error);
                 formStatus.innerHTML = '<span style="color: #ef4444;">❌ Failed to send message. Please try again later.</span>';
             } finally {
                 sendBtn.disabled = false;
-                sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
-                setTimeout(() => {
-                    if (formStatus.innerHTML.includes('successfully')) {
-                        setTimeout(() => { formStatus.innerHTML = ''; }, 5000);
-                    }
-                }, 3000);
+                sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i> ' + (currentLang === 'en' ? 'Send Message' : 'Tuma Ujumbe');
+                setTimeout(() => { if (formStatus.innerHTML.includes('successfully')) setTimeout(() => formStatus.innerHTML = '', 5000); }, 3000);
             }
         });
         
-        console.log('%c✅ EmailJS is configured and ready!', 'color: #10b981; font-size: 14px;');
-        console.log('Service ID:', EMAILJS_SERVICE_ID);
-        console.log('Template ID:', EMAILJS_TEMPLATE_ID);
-        console.log('Messages will be sent to: fadhililawi04@gmail.com');
-        
-        // CV Download Button Tracking
         document.getElementById('cvDownloadBtn').addEventListener('click', function(e) {
             e.preventDefault();
             if (typeof gtag !== 'undefined') {
-                gtag('event', 'cv_download_click', {
-                    'event_category': 'engagement',
-                    'event_label': 'cv_button'
-                });
+                gtag('event', 'cv_download_click', { 'event_category': 'engagement', 'event_label': 'cv_button' });
             }
-            fetch('cv.pdf')
-                .then(response => {
-                    if (response.ok) {
-                        window.location.href = 'cv.pdf';
-                        this.textContent = 'Download CV';
-                        this.style.background = 'linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%)';
-                    } else {
-                        alert('📄 CV itapatikana hivi karibuni!');
-                    }
-                })
-                .catch(() => {
-                    alert('📄 CV itapatikana hivi karibuni!');
-                });
+            alert('📄 CV will be available soon!');
         });
     </script>
 </body>
