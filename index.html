@@ -1065,9 +1065,110 @@
             .section-title { font-size: 26px; }
         }
 
+        /* ========== PHONE NAVIGATION BAR ADDITION - LEFT ALIGNED WITH TOGGLE ========== */
+        /* This adds a dedicated phone navigation bar that appears only on mobile devices */
+        /* It places the logo on the LEFT and the hamburger menu button on the RIGHT */
+        /* The original navbar is hidden on mobile, and this new one takes over */
+        
+        .phone-navbar {
+            display: none;
+            position: fixed;
+            top: 48px;
+            left: 16px;
+            right: 16px;
+            background: rgba(7, 11, 24, 0.92);
+            backdrop-filter: blur(24px);
+            border-radius: 60px;
+            border: 1px solid var(--border);
+            padding: 10px 20px;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 1001;
+            transition: all 0.3s ease;
+        }
+        
+        .phone-navbar.scrolled {
+            top: 42px;
+            background: rgba(7, 11, 24, 0.98);
+            border-color: rgba(108, 99, 255, 0.45);
+        }
+        
+        .phone-logo h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff 0%, #A78BFA 50%, #10B981 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+        
+        .phone-menu-btn {
+            background: rgba(108, 99, 255, 0.2);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #A78BFA;
+            font-size: 20px;
+        }
+        
+        .phone-menu-btn:active {
+            transform: scale(0.95);
+            background: rgba(108, 99, 255, 0.4);
+        }
+        
+        /* Hide original navbar on mobile, show phone navbar */
+        @media (max-width: 900px) {
+            .navbar {
+                display: none !important;
+            }
+            .phone-navbar {
+                display: flex !important;
+            }
+            .header-spacer {
+                height: 115px;
+            }
+            /* Make sure the hamburger menu button in phone navbar opens the existing mobile-nav */
+            /* The existing .menu-btn is hidden, we'll use our phone-menu-btn to trigger the same menu */
+        }
+        
+        body.light .phone-navbar {
+            background: rgba(255,255,255,0.94);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        /* Adjust top banner z-index and positioning for phone navbar */
+        @media (max-width: 900px) {
+            .top-banner {
+                z-index: 1002;
+            }
+            .phone-navbar {
+                z-index: 1001;
+            }
+            .mobile-nav {
+                z-index: 2000;
+            }
+            .overlay {
+                z-index: 1500;
+            }
+        }
+        
         html {
             scroll-padding-top: 130px;
             scroll-behavior: smooth;
+        }
+        
+        @media (max-width: 900px) {
+            html {
+                scroll-padding-top: 115px;
+            }
         }
     </style>
 </head>
@@ -1093,7 +1194,17 @@
     <div class="orb orb-3"></div>
 
     <div class="container">
-        <!-- NAVBAR -->
+        <!-- PHONE NAVIGATION BAR (LEFT ALIGNED + TOGGLE) - ONLY VISIBLE ON PHONES -->
+        <div class="phone-navbar" id="phoneNavbar">
+            <div class="phone-logo">
+                <h1 id="phoneLogoText">Lawi Rashidi</h1>
+            </div>
+            <div class="phone-menu-btn" id="phoneMenuBtn">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+
+        <!-- ORIGINAL NAVBAR (hidden on mobile) -->
         <nav class="navbar" id="navbar">
             <div class="logo"><h1 id="logoText">Lawi Rashidi</h1></div>
             <div class="nav-links">
@@ -1389,6 +1500,7 @@
         function applyLanguage(lang) {
             const t = translations[lang];
             document.getElementById('logoText').innerText = t.logo;
+            document.getElementById('phoneLogoText').innerText = t.logo;
             document.getElementById('navHome').innerText = t.navHome;
             document.getElementById('navAbout').innerText = t.navAbout;
             document.getElementById('navSkills').innerText = t.navSkills;
@@ -1495,8 +1607,10 @@
 
         // ========== NAVBAR SCROLL ==========
         const navbar = document.getElementById('navbar');
+        const phoneNavbar = document.getElementById('phoneNavbar');
         window.addEventListener('scroll', () => {
-            navbar.classList.toggle('scrolled', window.scrollY > 50);
+            if (navbar) navbar.classList.toggle('scrolled', window.scrollY > 50);
+            if (phoneNavbar) phoneNavbar.classList.toggle('scrolled', window.scrollY > 50);
         });
 
         // ========== BACK TO TOP ==========
@@ -1514,16 +1628,21 @@
             themeToggle.innerHTML = isLight ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
         });
 
-        // ========== MOBILE MENU ==========
+        // ========== MOBILE MENU (works for both original menu-btn AND new phone menu button) ==========
         const menuBtn = document.getElementById('menuBtn');
+        const phoneMenuBtn = document.getElementById('phoneMenuBtn');
         const mobileNav = document.getElementById('mobileNav');
         const overlay = document.getElementById('overlay');
         const closeMenuBtn = document.getElementById('closeMenu');
+        
         const openMenu = () => { mobileNav.classList.add('open'); overlay.classList.add('active'); document.body.style.overflow = 'hidden'; };
         const closeMenuFn = () => { mobileNav.classList.remove('open'); overlay.classList.remove('active'); document.body.style.overflow = ''; };
-        menuBtn.addEventListener('click', openMenu);
-        closeMenuBtn.addEventListener('click', closeMenuFn);
-        overlay.addEventListener('click', closeMenuFn);
+        
+        if (menuBtn) menuBtn.addEventListener('click', openMenu);
+        if (phoneMenuBtn) phoneMenuBtn.addEventListener('click', openMenu);
+        if (closeMenuBtn) closeMenuBtn.addEventListener('click', closeMenuFn);
+        if (overlay) overlay.addEventListener('click', closeMenuFn);
+        
         document.querySelectorAll('.mobile-nav a').forEach(link => {
             link.addEventListener('click', e => {
                 closeMenuFn();
